@@ -65,7 +65,7 @@ namespace toinfiniityandbeyond.PixelEditor
 			}
 			openImages.Add (image);
 			selectedImageIndex = openImages.Count - 1;
-			RefreshLayerList ();
+			//RefreshLayerList ();
 			PixelEditorUtility.AddImageAsPersistant (image);
 		}
 		private void CloseTab (Image image)
@@ -73,7 +73,7 @@ namespace toinfiniityandbeyond.PixelEditor
 			selectedImageIndex = openImages.Count - 1;
 			PixelEditorUtility.RemoveImageAsPersistant (image);
 			openImages.Remove (image);
-			RefreshLayerList ();
+			//RefreshLayerList ();
 		}
 		private void DrawCanvas (Rect rect)
 		{
@@ -145,7 +145,7 @@ namespace toinfiniityandbeyond.PixelEditor
 					if (GUI.Button (currentTabRect, openImages [i].name, EditorStyles.toolbarButton))
 					{
 						selectedImageIndex = i;
-						RefreshLayerList ();
+						//RefreshLayerList ();
 					}
 					currentTabRect.x += currentTabRect.width;
 					currentTabRect.width = 20;
@@ -199,17 +199,17 @@ namespace toinfiniityandbeyond.PixelEditor
 				{
 					if (e.type == EventType.MouseDown)
 					{
-						scriptableToolCache [SelectedImage.selectedTool].OnClickDown (mousePosition, layerList.index, SelectedImage.primaryColor, SelectedImage);
+						scriptableToolCache [SelectedImage.selectedTool].OnClickDown (mousePosition, selectedLayerIndex, SelectedImage.primaryColor, SelectedImage);
 					}
 					if (e.type == EventType.MouseDrag)
 					{
-						scriptableToolCache [SelectedImage.selectedTool].OnClick (mousePosition, layerList.index, SelectedImage.primaryColor, SelectedImage);
+						scriptableToolCache [SelectedImage.selectedTool].OnClick (mousePosition, selectedLayerIndex, SelectedImage.primaryColor, SelectedImage);
 					}
 					if (e.type == EventType.MouseUp)
 					{
-						scriptableToolCache [SelectedImage.selectedTool].OnClickUp (mousePosition, layerList.index, SelectedImage.primaryColor, SelectedImage);
+						scriptableToolCache [SelectedImage.selectedTool].OnClickUp (mousePosition, selectedLayerIndex, SelectedImage.primaryColor, SelectedImage);
 					}
-					List<Vector2> region = scriptableToolCache [SelectedImage.selectedTool].GetRegion (mousePosition, layerList.index, SelectedImage.primaryColor, SelectedImage);
+					List<Vector2> region = scriptableToolCache [SelectedImage.selectedTool].GetRegion (mousePosition, selectedLayerIndex, SelectedImage.primaryColor, SelectedImage);
 					Repaint ();
 				}
 			}

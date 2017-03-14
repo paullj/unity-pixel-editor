@@ -11,82 +11,82 @@ namespace toinfiniityandbeyond.PixelEditor
 	public partial class PixelEditorWindow : EditorWindow
 	{
 		private Rect layerWindowRect;
-		private ReorderableList layerList;
+		//private ReorderableList layerList;
 		private Vector2 layerListScroll;
+		private int selectedLayerIndex;
 
 		private void OnLayerWindowEnable ()
 		{
 			layerWindowRect = new Rect (this.position.width / 4 * 3 - 10, EditorGUIUtility.singleLineHeight + 10, this.position.width / 4, this.position.height / 2);
 
 			RefreshScriptableToolCache ();
-			RefreshLayerList ();
+			//RefreshLayerList ();
 		}
 
-		private void RefreshLayerList ()
-		{
-			if (SelectedImage == null)
-				return;
+		//private void RefreshLayerList ()
+		//{
+		//	if (SelectedImage == null)
+		//		return;
 			
-			layerList = new ReorderableList (SelectedImage.layers, typeof (Layer), false, true, true, true);
-			layerList.headerHeight = 0;
-			layerList.drawFooterCallback = (Rect rect) =>
-			{
+		//	layerList = new ReorderableList (SelectedImage.layers, typeof (Layer), false, true, true, true);
+		//	layerList.headerHeight = 0;
+		//	layerList.drawFooterCallback = (Rect rect) =>
+		//	{
 				
-			};
-			layerList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
-			{
-				var element = SelectedImage.layers [index];
-				rect.x += 10;
-				rect.width -= 10;
+		//	};
+		//	layerList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
+		//	{
+		//		var element = SelectedImage.layers [index];
+		//		rect.x += 10;
+		//		rect.width -= 10;
 
-				rect.y += 0;
-				float block = EditorGUIUtility.singleLineHeight;
+		//		rect.y += 0;
+		//		float block = EditorGUIUtility.singleLineHeight;
 
-				GUI.enabled = !element.isLocked;
+		//		GUI.enabled = !element.isLocked;
 
-				GUI.Label (new Rect (rect.x, rect.y, block * 2, block * 2), element.Texture);
+		//		GUI.Label (new Rect (rect.x, rect.y, block * 2, block * 2), element.Texture);
 
-				Texture2D enabledIcon = element.isEnabled ? Resources.Load<Texture2D> ("Icons/eye-visible") : Resources.Load<Texture2D> ("Icons/eye-hidden");
-				GUI.contentColor = new Color (0.2f, 0.2f, 0.2f);
-				EditorGUI.BeginChangeCheck ();
-				element.isEnabled = GUI.Toggle (new Rect (rect.x, rect.y, block * 2, block * 2), element.isEnabled, enabledIcon, "Label");
-				if (EditorGUI.EndChangeCheck ())
-				{
-					SelectedImage.IsDirty = true;
-				}
-				GUI.contentColor = Color.white;
+		//		Texture2D enabledIcon = element.isEnabled ? Resources.Load<Texture2D> ("Icons/eye-visible") : Resources.Load<Texture2D> ("Icons/eye-hidden");
+		//		GUI.contentColor = new Color (0.2f, 0.2f, 0.2f);
+		//		EditorGUI.BeginChangeCheck ();
+		//		element.isEnabled = GUI.Toggle (new Rect (rect.x, rect.y, block * 2, block * 2), element.isEnabled, enabledIcon, "Label");
+		//		if (EditorGUI.EndChangeCheck ())
+		//		{
+		//			SelectedImage.IsDirty = true;
+		//		}
+		//		GUI.contentColor = Color.white;
 
-				rect.x += block * 2 + 5;
-				rect.y += block / 2;
-				element.name = GUI.TextField (
-					new Rect (rect.x, rect.y, rect.width - block * 4, EditorGUIUtility.singleLineHeight),
-					element.name);
-				rect.x += rect.width - block * 4;
-				rect.y -= block / 2;
+		//		rect.x += block * 2 + 5;
+		//		rect.y += block / 2;
+		//		element.name = GUI.TextField (
+		//			new Rect (rect.x, rect.y, rect.width - block * 4, EditorGUIUtility.singleLineHeight),
+		//			element.name);
+		//		rect.x += rect.width - block * 4;
+		//		rect.y -= block / 2;
 
-				GUI.enabled = true;
-				GUI.contentColor = new Color (0.2f, 0.2f, 0.2f);
-				Texture2D lockedIcon = element.isLocked ? Resources.Load<Texture2D> ("Icons/lock") : Resources.Load<Texture2D> ("Icons/unlock");
-				element.isLocked = GUI.Toggle (
-					new Rect (rect.x, rect.y, block * 2, block * 2),
-					element.isLocked, lockedIcon, "Label");
-				GUI.contentColor = Color.white;
-			};
-			layerList.elementHeight = 2 * EditorGUIUtility.singleLineHeight;
-		}
+		//		GUI.enabled = true;
+		//		GUI.contentColor = new Color (0.2f, 0.2f, 0.2f);
+		//		Texture2D lockedIcon = element.isLocked ? Resources.Load<Texture2D> ("Icons/lock") : Resources.Load<Texture2D> ("Icons/unlock");
+		//		element.isLocked = GUI.Toggle (
+		//			new Rect (rect.x, rect.y, block * 2, block * 2),
+		//			element.isLocked, lockedIcon, "Label");
+		//		GUI.contentColor = Color.white;
+		//	};
+		//	layerList.elementHeight = 2 * EditorGUIUtility.singleLineHeight;
+		//}
 		private void DrawLayerWindow (int id)
 		{
-			if (layerList == null)
-				OnLayerWindowEnable();
+			//if (layerList == null)
+				//OnLayerWindowEnable();
 
 			int layerCount = SelectedImage.layers.Count;
 
 			Rect listRect = new Rect (2.5f, EditorGUIUtility.singleLineHeight + 2.5f, layerWindowRect.width - 5, layerWindowRect.height * 0.65f);
-			Rect viewRect = new Rect (0, 0, layerWindowRect.width - 5, EditorGUIUtility.singleLineHeight * 2 * layerCount);
-			layerListScroll = GUI.BeginScrollView (listRect, layerListScroll, viewRect);
+			Rect viewRect = new Rect (0, 0, layerWindowRect.width - 10, EditorGUIUtility.singleLineHeight * 2 * layerCount);
+			layerListScroll = GUI.BeginScrollView (listRect, layerListScroll, viewRect, new GUIStyle(""), new GUIStyle("PreVerticalScrollbar"));
 			for(int i = 0; i < layerCount; i++)
 			{
-				//GUI.Label (new Rect (listRect.x, listRect.y + EditorGUIUtility.singleLineHeight * 2 * i, listRect.width, EditorGUIUtility.singleLineHeight * 2), "Test");
 				var element = SelectedImage.layers [i];
 				int elementY = (int)EditorGUIUtility.singleLineHeight * 2 * i;
 
@@ -115,55 +115,53 @@ namespace toinfiniityandbeyond.PixelEditor
 				GUI.contentColor = Color.white;
 			}
 			GUI.EndScrollView ();
-		/*
+
 			EditorGUI.BeginChangeCheck ();
-			GUI.enabled = layerList.index > 0 && layerList.count > 1 && !SelectedImage.layers [layerList.index].isLocked;
-			if (GUI.Button (new Rect (2.5f, layerWindowRect.height * 0.65f, layerWindowRect.width / 8, EditorGUIUtility.singleLineHeight), "▲", EditorStyles.miniButtonLeft))
+			GUI.enabled = selectedLayerIndex > 0 && layerCount> 1 && !SelectedImage.layers [selectedLayerIndex].isLocked;
+			if (GUI.Button (new Rect (2.5f, EditorGUIUtility.singleLineHeight + layerCount * 2 * EditorGUIUtility.singleLineHeight, layerWindowRect.width / 8, EditorGUIUtility.singleLineHeight), "▲", EditorStyles.miniButtonLeft))
 			{
-				Layer temp = SelectedImage.layers [layerList.index];
-				SelectedImage.layers.RemoveAt (layerList.index);
-				SelectedImage.layers.Insert (layerList.index - 1, temp);
-				layerList.index--;
+				Layer temp = SelectedImage.layers [selectedLayerIndex];
+				SelectedImage.layers.RemoveAt (selectedLayerIndex);
+				SelectedImage.layers.Insert (selectedLayerIndex - 1, temp);
+				selectedLayerIndex--;
 			}
-			GUI.enabled = layerList.index >= 0 && layerList.index < layerList.count - 1 && layerList.count > 1 && !SelectedImage.layers [layerList.index].isLocked;
-			if (GUI.Button (new Rect (2.5f + layerWindowRect.width / 8, layerWindowRect.height * 0.65f, layerWindowRect.width / 8, EditorGUIUtility.singleLineHeight), "▼", EditorStyles.miniButtonRight))
+			GUI.enabled = selectedLayerIndex >= 0 && selectedLayerIndex < layerCount- 1 && layerCount> 1 && !SelectedImage.layers [selectedLayerIndex].isLocked;
+			if (GUI.Button (new Rect (2.5f + layerWindowRect.width / 8, EditorGUIUtility.singleLineHeight + layerCount * 2 * EditorGUIUtility.singleLineHeight, layerWindowRect.width / 8, EditorGUIUtility.singleLineHeight), "▼", EditorStyles.miniButtonRight))
 			{
-				Layer temp = SelectedImage.layers [layerList.index];
-				SelectedImage.layers.RemoveAt (layerList.index);
-				SelectedImage.layers.Insert (layerList.index + 1, temp);
-				layerList.index++;
+				Layer temp = SelectedImage.layers [selectedLayerIndex];
+				SelectedImage.layers.RemoveAt (selectedLayerIndex);
+				SelectedImage.layers.Insert (selectedLayerIndex + 1, temp);
+				selectedLayerIndex++;
 			}
 			GUI.enabled = true;
-			if (GUI.Button (new Rect (layerWindowRect.width - layerWindowRect.width / 2, layerWindowRect.y, layerWindowRect.width / 8, EditorGUIUtility.singleLineHeight), "+", EditorStyles.miniButtonLeft))
+			if (GUI.Button (new Rect (layerWindowRect.width - layerWindowRect.width / 2, EditorGUIUtility.singleLineHeight + layerCount * 2 * EditorGUIUtility.singleLineHeight, layerWindowRect.width / 8, EditorGUIUtility.singleLineHeight), "+", EditorStyles.miniButtonLeft))
 			{
-				layerList.list.Add (new Layer (SelectedImage));
-				layerList.index = layerList.count - 1;
+				SelectedImage.layers.Add (new Layer (SelectedImage));
+				selectedLayerIndex = layerCount - 1;
 			}
-			GUI.enabled = layerList.index >= 0 && layerList.count > 1 && !SelectedImage.layers [layerList.index].isLocked;
-			if (GUI.Button (new Rect (layerWindowRect.width - layerWindowRect.width / 8 * 3, layerWindowRect.y, layerWindowRect.width / 8, EditorGUIUtility.singleLineHeight), "-", EditorStyles.miniButtonMid))
+			GUI.enabled = selectedLayerIndex >= 0 && layerCount> 1 && !SelectedImage.layers [selectedLayerIndex].isLocked;
+			if (GUI.Button (new Rect (layerWindowRect.width - layerWindowRect.width / 8 * 3, EditorGUIUtility.singleLineHeight + layerCount * 2 * EditorGUIUtility.singleLineHeight, layerWindowRect.width / 8, EditorGUIUtility.singleLineHeight), "-", EditorStyles.miniButtonMid))
 			{
-				if (EditorUtility.DisplayDialog ("Warning!",
-									"Are you sure you want to delete this layer?", "Yes", "No"))
+				if (EditorUtility.DisplayDialog ("Warning!", "Are you sure you want to delete this layer?", "Yes", "No"))
 				{
-					ReorderableList.defaultBehaviours.DoRemoveButton (layerList);
+					SelectedImage.layers.RemoveAt (selectedLayerIndex);
+					selectedLayerIndex = selectedLayerIndex - 1;
 				}
 			}
-			GUI.enabled = layerList.index >= 0;
-			if (GUI.Button (new Rect (2.5f + layerWindowRect.width / 5 * 4, layerWindowRect.y, layerWindowRect.width / 5, EditorGUIUtility.singleLineHeight), "Clone", EditorStyles.miniButtonRight))
+			GUI.enabled = selectedLayerIndex >= 0;
+			if (GUI.Button (new Rect (2.5f + layerWindowRect.width / 5 * 4, EditorGUIUtility.singleLineHeight + layerCount * 2 * EditorGUIUtility.singleLineHeight, layerWindowRect.width / 5, EditorGUIUtility.singleLineHeight), "Clone", EditorStyles.miniButtonRight))
 			{
-				layerList.list.Add (new Layer (SelectedImage.layers [layerList.index]));
-				layerList.index = layerList.count - 1;
+				SelectedImage.layers.Add (new Layer (SelectedImage.layers [selectedLayerIndex]));
+				selectedLayerIndex = layerCount - 1;
 			}
 			if (EditorGUI.EndChangeCheck ())
 				SelectedImage.IsDirty = true;
 			GUI.enabled = true;
 
-
-
-			if (layerList.index >= 0 && layerList.index < SelectedImage.layers.Count)
+			if (selectedLayerIndex >= 0 && selectedLayerIndex < SelectedImage.layers.Count)
 			{
 				EditorGUI.BeginChangeCheck ();
-				var element = SelectedImage.layers [layerList.index];
+				var element = SelectedImage.layers [selectedLayerIndex];
 				GUI.enabled = !element.isLocked;
 
 				float height = layerWindowRect.height - 2.5f - EditorGUIUtility.singleLineHeight * 2;
@@ -175,7 +173,7 @@ namespace toinfiniityandbeyond.PixelEditor
 					SelectedImage.IsDirty = true;
 				GUI.enabled = true;
 			}
-			*/
+			
 			GUI.DragWindow ();
 		}
 
